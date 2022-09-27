@@ -1,0 +1,34 @@
+micronaut:
+  application:
+    name: api
+  server:
+    port: 8081
+  router:
+    static-resources:
+      default:
+        paths:
+          - file:/static
+        mapping: /static/**/*
+        enabled: true
+  #tag::oauth2[]
+  security:
+    authentication: idtoken # <1>
+    oauth2:
+      clients:
+        auth0: # <2>
+          client-id: '${OAUTH_CLIENT_ID}' # <3>
+          client-secret: '${OAUTH_CLIENT_SECRET}' # <4>
+          openid:
+            issuer: 'https://${OAUTH_DOMAIN}/' # <5>
+    intercept-url-map:
+      - pattern: /static/**
+        httpMethod: GET
+        access:
+          - isAnonymous()
+      - pattern: /static/**
+        access:
+          - isAuthenticated()
+    endpoints:
+      logout:
+        get-allowed: true # <6>
+#end::oauth2[]
