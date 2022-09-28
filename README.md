@@ -157,4 +157,13 @@ To display the user information that we returned in the controller, we can use t
 ## Let's try it
 
 Congratulation! Now that you have completed all this steps, you can run and test your application. 
-> If you are using Gralde, run `./gradlew run`
+> If you are using Gradle, run `./gradlew run`
+
+## To go further
+
+- [Micronaut documentation](https://docs.micronaut.io/latest/guide/)
+- [Micronaut security documentation](https://micronaut-projects.github.io/micronaut-security/latest/guide/)
+
+## Acknowledgement
+
+Thanks to Sergio del Amo for the guide https://guides.micronaut.io/latest/micronaut-oauth2-auth0-gradle-java.html
