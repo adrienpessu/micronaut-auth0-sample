@@ -9,17 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Upgrade Micronaut Version Number
-        run: |
-          sed -i 's/micronautVersion.*/micronautVersion=${{ steps.xpath.outputs.result }}/' gradle.properties
       - uses: actions/setup-java@v3
         with:
           distribution: 'adopt'
           java-version: '17'
-      - uses: eskatos/gradle-command-action@v1
-        name: Testing build
-        with:
-          arguments: check --stacktrace
+      - uses: gradle/gradle-build-action@v2
+      - name: Execute Gradle build
+        run: ./gradlew check
         env:
           OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
           OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
