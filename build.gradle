@@ -23,7 +23,10 @@ dependencies {
     compileOnly("org.graalvm.nativeimage:svm")
 
     implementation("io.micronaut:micronaut-validation")
-
+    testImplementation "io.micronaut.test:micronaut-test-spock"
+    testImplementation("org.spockframework:spock-core") {
+        exclude group: "org.codehaus.groovy", module: "groovy-all"
+    }
 }
 
 
