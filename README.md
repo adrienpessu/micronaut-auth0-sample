@@ -4,98 +4,157 @@ Learn how to create a Micronaut application and secure it with an Authorization 
 
 You will need to have Java 17+ installed
 
-## OAuth 2.0 [_oauth_2_0]
+## Configure Auth0
 
-To provide authentication, sign in to your [Auth0](https://auth0.com) account.
+To use Auth0 services, you’ll need to have an application set up in the Auth0 Dashboard. The Auth0 application is where you will configure how you want authentication to work for the project you are developing.
 
-Create an Application
+### Configure an application
 
-![auth0 create application](docs/auth0-create-application.png)
+Use the interactive selector to create a new Auth0 application or select an existing application that represents the project you want to integrate with. Every application in Auth0 is assigned an alphanumeric, unique client ID that your application code will use to call Auth0 APIs through the SDK.
 
-Fill the Application URIs:
+Any settings you configure using this quickstart will automatically update for your Application in the [Dashboard](https://manage.auth0.com/dashboard/), which is where you can manage your Applications in the future.
 
-![auth0 application uris](docs/auth0-application-uris.png)
+If you would rather explore a complete configuration, you can view a sample application instead.
 
--   Enter `http://localhost:8080/oauth/callback/auth0` as callback URL.
+### Configure Callback URLs 
 
--   Enter `http://localhost:8080/logout` as allowed logout URL.
+A callback URL is a URL in your application that you would like Auth0 to redirect users to after they have authenticated. If not set, users will not be returned to your application after they log in.
 
--   Enter `http://localhost:8080` as allowed web origins.
+> If you are following along with our sample project, set this to http://localhost:8080/oauth/callback/auth0.
 
-Once you have an HTTPS domain (e.g. `https://myapp.org`), enter it as Application Login URI: `https://myapp.org/oauth/login/auth0`.
+### Configure Logout URLs
 
-You can obtain the application’s domain, client id, and secret in the Auth0 console.
+A logout URL is a URL in your application that you would like Auth0 to redirect users to after they have logged out. If not set, users will not be able to log out from your application and will receive an error.
 
-![auth0 clientid clientsecret](docs/auth0-clientid-clientsecret.png)
+> If you are following along with our sample project, set this to http://localhost:8000.
 
-We want to use an **Authorization Code** grant type flow, which is described in the following diagram:
+## Configure Micronaut application
 
-![diagramm](docs/diagramm.png)
+There is two easy way to start a new Micronaut. You can generate the project on the [Micronaut launch](https://micronaut.io/launch/) website. 
+> If you are following along with our sample project, don't forget to add the features : views-thymeleaf, security-oauth2 and security-jwt
 
-common:create-app.adoc\[\]
+The other easy way is the [Micronaut Command Line Interface](https://docs.micronaut.io/latest/guide/#cli) (You can install it using the awesome [Sdkman](https://sdkman.io/)) and the following command : 
 
-### Dependencies [_dependencies]
+`mn create-app example.micronaut --build=gradle --lang=java`
 
-To use OAuth 2.0 integration, add the following dependency:
+If you already have a Micronaut project, you generate your project with Micronaut CLI or you haven't added the security features in Micronaut launch. You will need to add a few dependencies :
 
-dependency:micronaut-security-oauth2\[groupId=io.micronaut.security\]
+### Add dependencies
 
-Also add [Micronaut JWT support](https://micronaut-projects.github.io/micronaut-security/latest/guide/index.html#jwt) dependencies:
+To use OAuth 2.0 integration, add the `micronaut-security-oauth2` dependency:
 
-dependency:micronaut-security-jwt\[groupId=io.micronaut.security\]
+Also add Micronaut JWT support `micronaut-security-jwt` dependencies:
 
-### Configuration [_configuration]
+> This guide uses Thymeleaf and the Micronaut Security integration module for the view layer. If you are using a different view technology, the Spring Micronaut configuration and components remain the same.
+
+If you are using Gradle, you can include these dependencies to your project
+```groovy
+
+dependencies {
+    ...
+    implementation("io.micronaut.security:micronaut-security-jwt")
+    implementation("io.micronaut.security:micronaut-security-oauth2")
+    ...
+}
+```
+
+### Write your application
+
+If you use Java or Kotlin and IntelliJ IDEA, make sure to enable annotation processing.
+![Annotation Processors](docs/annotationprocessorsintellij.png)
+
+#### Configure Micronaut security
 
 Add the following OAuth2 Configuration:
 
-resource:application.yml\[tag=oauth2\]
+```
+  security:
+    authentication: idtoken 
+    oauth2:
+      clients:
+        auth0: 
+          client-id: '${OAUTH_CLIENT_ID}' 
+          client-secret: '${OAUTH_CLIENT_SECRET}' 
+          openid:
+            issuer: 'https://${OAUTH_DOMAIN}/' 
+    endpoints:
+      logout:
+        get-allowed: true 
+```
+In this configuration, we tell Micronaut security to rely on `idtoken`. 
+We also specify to use the `client-id`, `client-secret` and `openid.issuer` provided in environment variables. Those settings will be found in your [Auth0 Dashboard](https://manage.auth0.com/dashboard/) (as mention above). Please note that the issuer is Auth0 domain. (It looks like `xxx.eu.auth0.com`)
 
-callout:authentication-idtoken\[number=1,arg0=Auth0\] callout:oauth2-client-name\[number=2,arg0=auth0\] \<3\> Client ID. See previous screenshot. \<4\> Client Secret. See previous screenshot. \<5\> `issuer` URL. It allows the Micronaut framework to [discover the configuration of the OpenID Connect server](https://auth0.com/docs/configure/applications/configure-applications-with-oidc-discovery). Note: we will use the application’s domain. \<6\> Accept GET request to the `/logout` endpoint.
+During the application startup, Micronaut security fetch the OpenId configuration from Auth0 (at `https://xxx.eu.auth0.com/.well-know/openid-configuration`) 
 
-When you start the Micronaut application, it fetches the Auth0 application’s `openidconfiguration`:
+> Please do not hard code the `client-id`, `client-secret` and `openid.issuer`. You should use environment variables and / or [environment specific properties](https://docs.micronaut.io/latest/guide/#propertySource).
 
-``` bash
-https://{auth0domain}/.well-known/openid-configuration
+#### Add a Controller
+
+Create a java file suffixed by `Controller` (`HomeController` for example). 
+You can start this controller with the following content.
+
+```java
+@Controller
+public class HomeController {
+
+    @Secured(SecurityRule.IS_ANONYMOUS)
+    @View("home") 
+    @Get
+    public HttpResponse<Map<String, Object>> index(@Nullable Authentication authentication) {
+
+        HashMap<String, Object> variables = new HashMap<>();
+        if (authentication != null) {
+            variables.putAll(authentication.getAttributes());
+        }
+
+        return HttpResponse.ok(variables);
+    }
+}
 ```
 
-The previous configuration uses several placeholders. You will need to set up `OAUTH_CLIENT_ID`, `OAUTH_CLIENT_SECRET`, and `OAUTH_DOMAIN` environment variables.
+The `@Controller` annotation tells Micronaut that this class is a controller.
+The `@Secured(SecurityRule.IS_ANONYMOUS)` annotation tells Micronaut security to allow anonymous users (not logged in) to access this controller. Micronaut security allow us to restrict access to the application based on the authentication status but also on roles.
+The `@View` annotation tells Micronaut View to load the view name `home` 
+The `@Get` annotation tells Micronaut to respond to `GET` Http requests
 
-    export OAUTH_CLIENT_ID=XXXXXXXXXX
-    export OAUTH_CLIENT_SECRET=YYYYYYYYYY
-    export OAUTH_DOMAIN=micronautguides.eu.auth0.com
+The `index` method has one parameter called authentication. The `Authentication` object includes information about the current users (like information contained in the idtoken). We allow this parameter to be `null` for anonymous users. The instruction of this method takes the `attributes` field of `authentication` and simply return it to the view. (You probably shouldn't do this in production for security reasons)
 
-common:micronaut-views-thymeleaf.adoc\[\]
+#### Add a View
 
-### Home controller [_home_controller]
+Since we already specify in the controller that the view is named `home`, we have to create a file named `home.html`.
+In that file, you will have all the HTML (maybe CSS and JavaScript) code that composed your page with Thymeleaf templating code. 
 
-Create a controller to handle the requests to `/`. You will display the email of the authenticated person if any. Annotate the controller endpoint with `@View`, since we will use a Thymeleaf template.
+To display content whereas the user is connected or not, we can use the following Thymeleaf syntax and the variable `security` : 
+```html
+<a href="/oauth/login/auth0" class="btn btn-link" th:unless="${security}">Enter</a>
+<a href="/oauth/logout" class="btn btn-link" th:if="${security}">Logout</a>
+```
 
-source:HomeController\[\]
+To display the user information that we returned in the controller, we can use the following code : 
+```html
+<pre class="code" data-lang="JSON">
+    <code>{
+        "aud": "<span th:text="${aud}"></span>",
+        "email": "<span th:text="${email}"></span>",
+        "email_verified": "<span th:text="${email_verified}"></span>",
+        "exp": "<span th:text="${exp}"></span>",
+        "family_name": "<span th:text="${family_name}"></span>",
+        "given_name": "<span th:text="${given_name}"></span>",
+        "iat": "<span th:text="${iat}"></span>",
+        "iss": "<span th:text="${iss}"></span>",
+        "locale": "<span th:text="${locale}"></span>",
+        "picture": "<span th:text="${picture}"></span>",
+        "name": "<span th:text="${name}"></span>",
+        "nickname": "<span th:text="${nickname}"></span>",
+        "nonce": "<span th:text="${nonce}"></span>",
+        "updated_at": "<span th:text="${updated_at}"></span>",
+        "sid": "<span th:text="${sid}"></span>",
+        "sub": "<span th:text="${sub}"></span>",
+    }</code>
+</pre>
+```
 
-callout:controller\[number=1,arg0=/\] callout:secured-anonymous\[number=2\] callout:view\[number=3\] callout:get\[number=4,arg0=index,arg1=/\]
+## Let's try it
 
-### Thymeleaf template [_thymeleaf_template]
-
-Create a Thymeleaf template:
-
-resource:views/home.html\[\]
-
-Also, note that we return an empty model in the controller. However, we are accessing `security` in the Thymeleaf template.
-
--   The [SecurityViewModelProcessor](https://micronaut-projects.github.io/micronaut-views/latest/api/io/micronaut/views/model/security/SecurityViewModelProcessor.html) injects into the model a `security` map with the authenticated user. See [User in a view](https://micronaut-projects.github.io/micronaut-views/latest/guide/#security-model-enhancement) documentation.
-
-common:runapp.adoc\[\]
-
-![auth0video](docs/auth0video.gif)
-
-common:graal-with-plugins.adoc\[\]
-
-:exclude-for-languages:groovy
-
-After you execute the native executable, navigate to localhost:8080 and authenticate with Auth0.
-
-## Next steps [_next_steps]
-
-Read [Micronaut OAuth 2.0 documentation](https://micronaut-projects.github.io/micronaut-security/latest/guide/#oauth) to learn more.
-
-common:helpWithMicronaut.adoc\[\]
+Congratulation! Now that you have completed all this steps, you can run and test your application. 
+> If you are using Gralde, run `./gradlew run`
