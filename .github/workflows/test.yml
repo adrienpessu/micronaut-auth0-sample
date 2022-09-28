@@ -4,8 +4,8 @@ on:
   push:
   workflow_dispatch:
 jobs:
-  update:
-    name: Updates Version
+  test:
+    name: Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -20,3 +20,7 @@ jobs:
         name: Testing build
         with:
           arguments: check --stacktrace
+        env:
+          OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
+          OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
+          OAUTH_DOMAIN: ${{ secrets.OAUTH_DOMAIN }}
