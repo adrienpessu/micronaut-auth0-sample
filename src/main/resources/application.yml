@@ -2,15 +2,15 @@ micronaut:
   application:
     name: app
   security:
-    authentication: idtoken # <1>
+    authentication: idtoken 
     oauth2:
       clients:
-        auth0: # <2>
-          client-id: '${OAUTH_CLIENT_ID}' # <3>
-          client-secret: '${OAUTH_CLIENT_SECRET}' # <4>
+        auth0:
+          client-id: '${OAUTH_CLIENT_ID}'
+          client-secret: '${OAUTH_CLIENT_SECRET}'
           openid:
-            issuer: 'https://${OAUTH_DOMAIN}/' # <5>
+            issuer: 'https://${OAUTH_DOMAIN}/'
     endpoints:
       logout:
-        get-allowed: true # <6>
-#end::oauth2[]
+        get-allowed: true
+

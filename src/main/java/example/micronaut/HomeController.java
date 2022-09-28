@@ -19,9 +19,9 @@ import java.util.Map;
 @Controller // <1>
 public class HomeController {
 
-    @Secured(SecurityRule.IS_ANONYMOUS) // <2>
-    @View("home") // <3>
-    @Get // <4>
+    @Secured(SecurityRule.IS_ANONYMOUS)
+    @View("home")
+    @Get
     public HttpResponse<Map<String, Object>> index(@Nullable Authentication authentication) {
 
         HashMap<String, Object> variables = new HashMap<>();
