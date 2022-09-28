@@ -30,14 +30,14 @@ A logout URL is a URL in your application that you would like Auth0 to redirect 
 
 ## Configure Micronaut application
 
-There is two easy way to start a new Micronaut. You can generate the project on the [Micronaut launch](https://micronaut.io/launch/) website. 
+There are two easy ways to start a new Micronaut. You can generate the project on the [Micronaut launch](https://micronaut.io/launch/) website. 
 > If you are following along with our sample project, don't forget to add the features : views-thymeleaf, security-oauth2 and security-jwt
 
 The other easy way is the [Micronaut Command Line Interface](https://docs.micronaut.io/latest/guide/#cli) (You can install it using the awesome [Sdkman](https://sdkman.io/)) and the following command : 
 
 `mn create-app example.micronaut --build=gradle --lang=java`
 
-If you already have a Micronaut project, you generate your project with Micronaut CLI or you haven't added the security features in Micronaut launch. You will need to add a few dependencies :
+If you already have a Micronaut project, you have generated your project with Micronaut CLI or you haven't added the security features in Micronaut launch. You will need to add a few dependencies :
 
 ### Add dependencies
 
@@ -45,7 +45,7 @@ To use OAuth 2.0 integration, add the `micronaut-security-oauth2` dependency:
 
 Also add Micronaut JWT support `micronaut-security-jwt` dependencies:
 
-> This guide uses Thymeleaf and the Micronaut Security integration module for the view layer. If you are using a different view technology, the Spring Micronaut configuration and components remain the same.
+> This guide uses Thymeleaf and the Micronaut Security integration module for the view layer. If you are using a different view technology, the Micronaut security configuration and components remain the same.
 
 If you are using Gradle, you can include these dependencies to your project
 ```groovy
@@ -60,7 +60,7 @@ dependencies {
 
 ### Write your application
 
-If you use Java or Kotlin and IntelliJ IDEA, make sure to enable annotation processing.
+If you use IntelliJ IDEA, make sure to enable annotation processing.
 ![Annotation Processors](docs/annotationprocessorsintellij.png)
 
 #### Configure Micronaut security
@@ -81,10 +81,10 @@ Add the following OAuth2 Configuration:
       logout:
         get-allowed: true 
 ```
-In this configuration, we tell Micronaut security to rely on `idtoken`. 
-We also specify to use the `client-id`, `client-secret` and `openid.issuer` provided in environment variables. Those settings will be found in your [Auth0 Dashboard](https://manage.auth0.com/dashboard/) (as mention above). Please note that the issuer is Auth0 domain. (It looks like `xxx.eu.auth0.com`)
+In this configuration, you tell Micronaut security to rely on `idtoken`. 
+We also specify to use the `client-id`, `client-secret` and `openid.issuer` provided in environment variables. Those settings will be found in your [Auth0 Dashboard](https://manage.auth0.com/dashboard/) (as mention above). Please note that the issuer is the Auth0 domain. (It looks like `xxx.eu.auth0.com`)
 
-During the application startup, Micronaut security fetch the OpenId configuration from Auth0 (at `https://xxx.eu.auth0.com/.well-know/openid-configuration`) 
+During the application startup, Micronaut security fetches the OpenId configuration from Auth0 (at `https://xxx.eu.auth0.com/.well-know/openid-configuration`) 
 
 > Please do not hard code the `client-id`, `client-secret` and `openid.issuer`. You should use environment variables and / or [environment specific properties](https://docs.micronaut.io/latest/guide/#propertySource).
 
@@ -117,20 +117,20 @@ The `@Secured(SecurityRule.IS_ANONYMOUS)` annotation tells Micronaut security to
 The `@View` annotation tells Micronaut View to load the view name `home` 
 The `@Get` annotation tells Micronaut to respond to `GET` Http requests
 
-The `index` method has one parameter called authentication. The `Authentication` object includes information about the current users (like information contained in the idtoken). We allow this parameter to be `null` for anonymous users. The instruction of this method takes the `attributes` field of `authentication` and simply return it to the view. (You probably shouldn't do this in production for security reasons)
+The `index` method has one parameter called authentication. The `Authentication` object includes information about the current user (like information contained in the idtoken). We allow this parameter to be `null` for anonymous users. The instructions of this method take the `attributes` field of `authentication` and simply return it to the view. (You probably shouldn't do this in production for security reasons)
 
 #### Add a View
 
-Since we already specify in the controller that the view is named `home`, we have to create a file named `home.html`.
+Since you already specified in the controller that the view is named `home`, you have to create a file named `home.html`.
 In that file, you will have all the HTML (maybe CSS and JavaScript) code that composed your page with Thymeleaf templating code. 
 
-To display content whereas the user is connected or not, we can use the following Thymeleaf syntax and the variable `security` : 
+To display content whereas the user is connected or not, you can use the following Thymeleaf syntax and the variable `security` : 
 ```html
 <a href="/oauth/login/auth0" class="btn btn-link" th:unless="${security}">Enter</a>
 <a href="/oauth/logout" class="btn btn-link" th:if="${security}">Logout</a>
 ```
 
-To display the user information that we returned in the controller, we can use the following code : 
+To display the user information that you returned in the controller, you can use the following code : 
 ```html
 <pre class="code" data-lang="JSON">
     <code>{
