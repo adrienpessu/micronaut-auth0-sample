@@ -30,7 +30,7 @@
         <section class="navbar-section">
             <a href="#" class="btn btn-link">Home</a>
             <a class="btn btn-link" th:if="${security}"><span th:text="(${name})"></span></a>
-            <img th:if="${picture}" style="border-radius: 50%;" height="75" alt="Profil picture" th:src="${picture}" />
+            <img th:if="${picture}" style="border-radius: 50%;" height="75" alt="Profile picture" th:src="${picture}" />
             <a href="/oauth/login/auth0" class="btn btn-link" th:unless="${security}">Enter</a>
             <a href="/oauth/logout" class="btn btn-link" th:if="${security}">Logout</a>
         </section>

@@ -2,7 +2,7 @@ micronaut:
   application:
     name: app
   security:
-    authentication: idtoken 
+    authentication: idtoken
     oauth2:
       clients:
         auth0:
