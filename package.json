@@ -8,7 +8,7 @@
   },
   "scripts": {
     "e2e": "cypress run --e2e",
-    "e2e-ci": "concurrently \"java -jar build/libs/micronaut-auth0-sample-0.1-all.jar\" \"cypress run --e2e --browser chrome\""
+    "e2e-ci": "concurrently \"java -jar build/libs/micronaut-auth0-sample-0.1-all.jar\" \"cypress run --e2e --browser chrome\" --success first --kill-others"
   },
   "repository": {
     "type": "git",

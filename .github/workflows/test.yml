@@ -34,7 +34,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: timeout 60 npm i && npm run e2e-ci || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
+      - run: npm i && npm run e2e-ci
         env:
           OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
           OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
