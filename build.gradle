@@ -29,6 +29,9 @@ dependencies {
     }
 }
 
+jar {
+  archiveBaseName = 'micronaut-auth0-sample'
+}
 
 application {
     mainClass.set("example.micronaut.Application")

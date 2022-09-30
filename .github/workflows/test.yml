@@ -29,8 +29,10 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '17'
+      - name: Gradle build
+        run: ./gradlew assemble
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: npm run e2e-ci
+      - run: npm i && npm run e2e-ci
 
