@@ -35,4 +35,8 @@ jobs:
         with:
           node-version: 16
       - run: npm i && npm run e2e-ci
+        env:
+          OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
+          OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
+          OAUTH_DOMAIN: ${{ secrets.OAUTH_DOMAIN }}
 
