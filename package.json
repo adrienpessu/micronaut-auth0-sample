@@ -1,0 +1,27 @@
+{
+  "name": "micronaut-oauth2-auth0-gradle-java",
+  "version": "1.0.0",
+  "description": "Learn how to create a Micronaut application and secure it with an Authorization Server provided by Auth0.",
+  "main": "cypress.config.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "e2e": "cypress run --e2e",
+    "e2e-ci": "concurrently \"./gradlew run\" \"cypress run --e2e --browser chrome\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adrienpessu/micronaut-auth0-sample.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adrienpessu/micronaut-auth0-sample/issues"
+  },
+  "homepage": "https://github.com/adrienpessu/micronaut-auth0-sample#readme",
+  "devDependencies": {
+    "concurrently": "^7.4.0",
+    "cypress": "^10.9.0"
+  }
+}

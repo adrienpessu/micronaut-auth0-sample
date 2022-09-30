@@ -1,6 +1,7 @@
 dist
 .DS_Store
 .gradle/
+node_modules
 .idea/
 build/
 !build-logic/src/main/java/io/micronaut/build
@@ -20,3 +21,5 @@ bin/
 .kotlintest
 */.kotlintest/
 application-dev.yml
+*.env.js
+cypress/videos/*
