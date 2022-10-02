@@ -2,7 +2,7 @@
 
 Learn how to create a Micronaut application and secure it with an Authorization Server provided by Auth0.
 
-You will need to have Java 17+ installed
+You will need to have Java 11 installed
 
 ## Configure Auth0
 
