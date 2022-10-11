@@ -35,9 +35,9 @@ There are two easy ways to start a new Micronaut. You can generate the project o
 
 The other easy way is the [Micronaut Command Line Interface](https://docs.micronaut.io/latest/guide/#cli) (You can install it using the awesome [Sdkman](https://sdkman.io/)) and the following command : 
 
-`mn create-app example.micronaut --build=gradle --lang=java`
+`mn create-app example.micronaut.auth0 --build=gradle --lang=java --features=security-jwt,security-oauth2`
 
-If you already have a Micronaut project, you have generated your project with Micronaut CLI or you haven't added the security features in Micronaut launch. You will need to add a few dependencies :
+If you already have a Micronaut project, or you haven't added the security features in Micronaut launch / CLI. You will need to add a few dependencies :
 
 ### Add dependencies
 
