@@ -29,8 +29,8 @@
         </section>
         <section class="navbar-section">
             <a href="#" class="btn btn-link">Home</a>
-            <a class="btn btn-link" th:if="${security}"><span id="name" th:text="(${name})"></span></a>
-            <img th:if="${picture}" style="border-radius: 50%;" height="75" alt="Profile picture" th:src="${picture}" />
+            <a class="btn btn-link" th:if="${security}"><span id="name" th:text="(${security.attributes.name})"></span></a>
+            <img th:if="${security}" style="border-radius: 50%;" height="75" alt="Profile picture" th:src="${security.attributes.picture}" />
             <a href="/oauth/login/auth0" class="btn btn-link enter" th:unless="${security}">Enter</a>
             <a href="/oauth/logout" class="btn btn-link" th:if="${security}">Logout</a>
         </section>
@@ -38,36 +38,21 @@
 
     <div class="container">
     <div class="splash-container">
-        <div class="splash" th:if="${name}">
+        <div class="splash" th:if="${security}">
             <h1 class="splash-head">Data about the principal retrieved from Auth0</h1>
-            <p class="splash-subhead">
-                <pre class="code" data-lang="JSON">
-<code>{
-    "aud": "<span th:text="${aud}"></span>",
-    "email": "<span th:text="${email}"></span>",
-    "email_verified": "<span th:text="${email_verified}"></span>",
-    "exp": "<span th:text="${exp}"></span>",
-    "family_name": "<span th:text="${family_name}"></span>",
-    "given_name": "<span th:text="${given_name}"></span>",
-    "iat": "<span th:text="${iat}"></span>",
-    "iss": "<span th:text="${iss}"></span>",
-    "locale": "<span th:text="${locale}"></span>",
-    "picture": "<span th:text="${picture}"></span>",
-    "name": "<span th:text="${name}"></span>",
-    "nickname": "<span th:text="${nickname}"></span>",
-    "nonce": "<span th:text="${nonce}"></span>",
-    "updated_at": "<span th:text="${updated_at}"></span>",
-    "sid": "<span th:text="${sid}"></span>",
-    "sub": "<span th:text="${sub}"></span>",
+            <p>
+            <pre class="code" data-lang="JSON">
+            <code>{<th:block th:each="entry : ${security.attributes}">
+    "<th:block th:text="${entry.key}"></th:block>": "<th:block th:text="${entry.value}"></th:block>",</th:block>
 }</code>
-                </pre>
+        </pre>
             </p>
             <p>
                 <a href="http://auth0.com" class="pure-button pure-button-primary">Get Started</a>
             </p>
         </div>
-        <div class="splash" th:unless="${name}">
-            Just click on <a href="/oauth/login/auth0" class="btn btn-link" th:unless="${security}">Enter</a> to sign up / sign in
+        <div class="splash" th:unless="${security}">
+            Just click on <a href="/oauth/login/auth0" class="btn btn-link">Enter</a> to sign up / sign in
         </div>
     </div>
 
