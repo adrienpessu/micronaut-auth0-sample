@@ -2,7 +2,7 @@
 
 Learn how to create a Micronaut application and secure it with an Authorization Server provided by Auth0.
 
-You will need to have Java 11 installed
+You will need to have Java 11+ installed
 
 ## Configure Auth0
 
@@ -81,10 +81,10 @@ Add the following OAuth2 Configuration:
       logout:
         get-allowed: true 
 ```
-In this configuration, you tell Micronaut security to rely on `idtoken`. 
+In this configuration, you tell Micronaut security to rely on `idtoken```.
 We also specify to use the `client-id`, `client-secret` and `openid.issuer` provided in environment variables. Those settings will be found in your [Auth0 Dashboard](https://manage.auth0.com/dashboard/) (as mention above). Please note that the issuer is the Auth0 domain. (It looks like `xxx.eu.auth0.com`)
 
-During the application startup, Micronaut security fetches the OpenId configuration from Auth0 (at `https://xxx.eu.auth0.com/.well-know/openid-configuration`) 
+During the application startup, Micronaut security fetches the OpenId configuration from Auth0 (at `https://xxx.eu.auth0.com/.well-know/openid-configuration`) `
 
 > Please do not hard code the `client-id`, `client-secret` and `openid.issuer`. You should use environment variables and / or [environment specific properties](https://docs.micronaut.io/latest/guide/#propertySource).
 
