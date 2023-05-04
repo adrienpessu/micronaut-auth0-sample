@@ -1,5 +1,5 @@
 plugins {
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
     id("io.micronaut.application") version "3.7.9"
 }
 
@@ -37,8 +37,8 @@ application {
     mainClass.set("example.micronaut.Application")
 }
 java {
-    sourceCompatibility = JavaVersion.toVersion("11")
-    targetCompatibility = JavaVersion.toVersion("11")
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
 }
 
 graalvmNative.toolchainDetection = false
