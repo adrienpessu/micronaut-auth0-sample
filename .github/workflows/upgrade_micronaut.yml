@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Fetch Micronaut Maven descriptor
-        run: curl https://repo.maven.apache.org/maven2/io/micronaut/views/micronaut-views-thymeleaf/maven-metadata.xml -o /tmp/micronaut-maven-descriptor.xml
+        run: curl https://repo1.maven.org/maven2/io/micronaut/micronaut-validation/maven-metadata.xml -o /tmp/micronaut-maven-descriptor.xml
       - name: Extract the latest version
         uses: QwerMike/xpath-action@v1
         id: xpath
