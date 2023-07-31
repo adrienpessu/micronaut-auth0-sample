@@ -15,8 +15,6 @@ import org.spockframework.util.Assert;
 import spock.lang.AutoCleanup;
 import spock.lang.Shared;
 
-import javax.validation.constraints.AssertTrue;
-
 @MicronautTest
 class MicronautAuth0Test {
 
