@@ -10,5 +10,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Gradle Dependency Submission
-        uses: mikepenz/gradle-dependency-submission@v0.8.6
+        uses: mikepenz/gradle-dependency-submission@v0.9.0
 
