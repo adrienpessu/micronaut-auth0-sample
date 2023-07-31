@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/adrienpessu/micronaut-auth0-sample#readme",
   "devDependencies": {
-    "concurrently": "^7.4.0",
-    "cypress": "^10.9.0"
+    "concurrently": "^8.2.0",
+    "cypress": "^12.17.2"
   }
 }
