@@ -1,6 +1,6 @@
 plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("io.micronaut.application") version "3.7.9"
+    id("io.micronaut.application") version "4.0.1"
 }
 
 version = "0.1"
@@ -22,8 +22,7 @@ dependencies {
     runtimeOnly("ch.qos.logback:logback-classic")
     compileOnly("org.graalvm.nativeimage:svm")
 
-    implementation("io.micronaut:micronaut-validation")
-    testImplementation "io.micronaut.test:micronaut-test-spock"
+    testImplementation "io.micronaut.test:micronaut-test-spock:$micronautVersion"
     testImplementation("org.spockframework:spock-core") {
         exclude group: "org.codehaus.groovy", module: "groovy-all"
     }
