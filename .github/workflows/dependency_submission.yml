@@ -13,6 +13,12 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '17'
-      - name: Gradle Dependency Submission
-        uses: mikepenz/gradle-dependency-submission@v0.9.0
+      - name: Setup Gradle to generate and submit dependency graphs
+        uses: gradle/gradle-build-action@v2
+        with:
+          dependency-graph: generate-and-submit
+      - name: Run a build, generating the dependency graph snapshot which will be submitted
+        run: ./gradlew assemble
+#      - name: Gradle Dependency Submission
+#        uses: mikepenz/gradle-dependency-submission@v0.9.0
 
