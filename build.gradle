@@ -23,7 +23,7 @@ dependencies {
     runtimeOnly("org.yaml:snakeyaml")
     compileOnly("org.graalvm.nativeimage:svm")
 
-    testImplementation "io.micronaut.test:micronaut-test-spock:4.0.1"
+    testImplementation "io.micronaut.test:micronaut-test-spock:4.0.2"
     testImplementation("org.spockframework:spock-core") {
         exclude group: "org.codehaus.groovy", module: "groovy-all"
     }
